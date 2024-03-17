@@ -1,0 +1,14 @@
+FROM node:21.7-slim
+
+# Create new user
+WORKDIR /usr/src/app
+
+COPY package.json /usr/src/app/
+
+RUN apt-get update && apt install -y netcat-traditional
+
+# env-cmd and sequelize at the command-line for
+# easier development
+RUN npm install -g env-cmd sequelize-cli
+
+RUN npm install

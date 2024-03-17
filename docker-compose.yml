@@ -1,0 +1,37 @@
+version: "3"
+
+services:
+  postgres:
+    container_name: "postgres"
+    build: ./docker/postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_MULTIPLE_DATABASES: serverdev,servertest
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: pass
+
+  server:
+    container_name: "server"
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    ports:
+      - "127.0.0.1:10020:10020"
+      - "9229:9229"
+    expose:
+      - 9229
+    volumes:
+      - ./server:/usr/src/app
+      - /usr/src/app/node_modules
+    depends_on:
+      # - redis
+      - postgres
+      # - migrate
+      # - rabbitmq
+    env_file:
+      - path: ./server/.env
+        required: false
+
+    command:
+      ["npm", "run", "dev"]
