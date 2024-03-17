@@ -30,7 +30,7 @@ services:
       # - migrate
       # - rabbitmq
     env_file:
-      - path: ./server/.env
+      - path: ./.env-dev
         required: false
 
     command:
