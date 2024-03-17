@@ -1,19 +1,25 @@
-const bodyParser = require('body-parser');
-const compression = require('compression');
-const express = require('express');
-const bearerToken = require('express-bearer-token');
-const http = require('http');
-// const { addRoutes } = require('./api/routes.js');
-const morgan = require('morgan');
+import bodyParser from 'body-parser';
+import compression from 'compression';
+import express, { Express, Response, Request, NextFunction} from 'express';
+import bearerToken from 'express-bearer-token';
+import http from 'http';
+const { addRoutes } = require('./api/routes');
+import morgan from 'morgan';
 // const { sequelize } = require('./db');
-const logger = require('./logger');
+import logger from './logger';
 // const eventStream = require('./lib/events');
 
-const port = process.env.PORT || 3000;
-const app = express();
+declare module 'express' {
+  export interface CustomExpress extends Express {
+    isReadyPromise: Promise<void>
+  }
+}
 
-app.all('*', function (req, res, next) {
-  res.header('Access-Control-Allow-Credentials', true);
+const port = process.env.PORT || 3000;
+const app: Express = express();
+
+app.all('*', function (req: Request, res: Response, next: NextFunction) {
+  res.header('Access-Control-Allow-Credentials', "true");
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
   res.header(
@@ -37,12 +43,14 @@ function subscriptionCallback() {
 }
 
 // let setupPromises = [sequelize.sync().then(sequelize.authenticate())];
-let setupPromises = [];
+let setupPromises: any[] = [];
 
 if (process.env.NODE_ENV !== 'test') {
   app.use(morgan('dev'));
   // setupPromises.push(eventStream.connectWithRetry(subscriptionCallback));
 }
+
+
 
 app.isReadyPromise = new Promise((resolve, reject) => {
   return Promise.all(setupPromises)
@@ -53,7 +61,7 @@ app.isReadyPromise = new Promise((resolve, reject) => {
 });
 
 const server = http.createServer(app);
-// addRoutes(app);
+addRoutes(app);
 
 if (require.main === module) {
   server.listen(port);
