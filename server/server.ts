@@ -3,7 +3,7 @@ import compression from 'compression';
 import express, { Express, Response, Request, NextFunction} from 'express';
 import bearerToken from 'express-bearer-token';
 import http from 'http';
-const { addRoutes } = require('./api/routes');
+import { addRoutes } from "./api/routes";
 import morgan from 'morgan';
 // const { sequelize } = require('./db');
 import logger from './logger';
@@ -50,8 +50,6 @@ if (process.env.NODE_ENV !== 'test') {
   // setupPromises.push(eventStream.connectWithRetry(subscriptionCallback));
 }
 
-
-
 app.isReadyPromise = new Promise((resolve, reject) => {
   return Promise.all(setupPromises)
     .then(() => {
@@ -67,4 +65,4 @@ if (require.main === module) {
   server.listen(port);
 }
 
-exports = module.exports = app;
+export default app;

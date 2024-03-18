@@ -6,7 +6,7 @@
   "scripts": {
     "test": "env-cmd -f .env-test mocha \\\"./{,!(node_modules)/**}/*.test.js\\\" --recursive --exit",
     "build": "npx tsc",
-    "dev": "nodemon -L server.ts"
+    "dev": "ts-node --esm build/server.js"
   },
   "repository": {
     "type": "git",
@@ -33,5 +33,6 @@
     "nodemon": "^3.1.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.4.2"
-  }
+  },
+  "type": "module"
 }
