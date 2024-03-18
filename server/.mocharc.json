@@ -1,0 +1,11 @@
+{
+  "extensions": ["ts"],
+  "spec": ["./api/healthCheck/healthCheck.api.test.ts"],
+  // "spec": ["./{,!(node_modules)/**}/*.test.ts"],
+  "node-option": [
+    "require=ts-node/register",
+    "loader=ts-node/esm",
+    "es-module-specifier-resolution=node"
+  ],
+  "loader": "ts-node/esm"
+}

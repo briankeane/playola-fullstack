@@ -67,4 +67,4 @@ if (require.main === module) {
   server.listen(port);
 }
 
-exports = module.exports = app;
+export default app;
